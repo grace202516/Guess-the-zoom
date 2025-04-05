@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Guess the Zoom - Grace Edition</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #fff8f0; text-align: center; padding: 20px; }
+        .question-box { margin-top: 40px; }
+        img { max-width: 300px; height: auto; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2); }
+        button { padding: 10px 20px; font-size: 16px; margin: 10px; border-radius: 8px; border: none; background-color: #ffcc70; }
+        .reveal { display: none; margin-top: 20px; }
+        .message { font-size: 20px; font-weight: bold; margin-top: 20px; color: #008800; }
+    </style>
+</head>
+<body>
+    <h1>Welcome, Grace!</h1>
+    <h2>Let's play “Guess the Zoom!”</h2>
+    <div class="question-box">
+        <p id="hint"></p>
+        <div id="zoom-img"></div>
+        <div id="options"></div>
+        <div class="reveal" id="reveal-box">
+            <img id="full-img" src="" alt="full image">
+            <p class="message" id="result-message"></p>
+            <button onclick="nextQuestion()">Next</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [{'id': 1, 'type': 'food', 'zoom_hint': 'It’s red, sweet, and has tiny seeds.', 'options': ['Apple', 'Strawberry', 'Ladybug'], 'answer': 'Strawberry', 'message': 'Great job, Grace! It’s a strawberry! Yummy and sweet—just like you!'}, {'id': 2, 'type': 'animal', 'zoom_hint': 'It’s fluffy, has long ears, and loves carrots.', 'options': ['Dog', 'Rabbit', 'Cat'], 'answer': 'Rabbit', 'message': 'Yes! It’s a rabbit! So fluffy and cute!'}, {'id': 3, 'type': 'food', 'zoom_hint': 'It’s yellow on the outside and white inside. Monkeys love it!', 'options': ['Potato', 'Banana', 'Lemon'], 'answer': 'Banana', 'message': 'Banana time! You’re amazing, Grace!'}, {'id': 4, 'type': 'animal', 'zoom_hint': 'It has black and white stripes and runs fast.', 'options': ['Zebra', 'Horse', 'Panda'], 'answer': 'Zebra', 'message': 'Right again! It’s a zebra. Zoom zoom!'}, {'id': 5, 'type': 'food', 'zoom_hint': 'It’s orange and crunchy. Bunnies eat it a lot!', 'options': ['Pumpkin', 'Orange', 'Carrot'], 'answer': 'Carrot', 'message': 'Crunchy carrot! You guessed it!'}, {'id': 6, 'type': 'animal', 'zoom_hint': 'It’s small, yellow, and goes ‘quack quack’.', 'options': ['Duck', 'Chick', 'Penguin'], 'answer': 'Duck', 'message': 'Quack-tastic! It’s a duck!'}, {'id': 7, 'type': 'food', 'zoom_hint': 'It’s green outside, red inside, and full of black seeds.', 'options': ['Apple', 'Melon', 'Watermelon'], 'answer': 'Watermelon', 'message': 'Sweet watermelon! Great work!'}, {'id': 8, 'type': 'animal', 'zoom_hint': 'It lives in the ocean and has a big fin on its back.', 'options': ['Shark', 'Dolphin', 'Seal'], 'answer': 'Shark', 'message': 'You got it! It’s a shark—wow!'}, {'id': 9, 'type': 'food', 'zoom_hint': 'It’s round, cheesy, and super yummy. Italians love it!', 'options': ['Pizza', 'Cake', 'Pasta'], 'answer': 'Pizza', 'message': 'Pizza power! Perfect answer!'}, {'id': 10, 'type': 'animal', 'zoom_hint': 'It purrs, loves milk, and says ‘meow’.', 'options': ['Dog', 'Cat', 'Tiger'], 'answer': 'Cat', 'message': 'Meow-velous! You’re so smart, Grace!'}];
+        let current = 0;
+
+        function showQuestion() {
+            const q = questions[current];
+            document.getElementById('hint').innerText = q.zoom_hint;
+            document.getElementById('zoom-img').innerHTML = `<img src='images/q${q.id}_zoom.jpg' alt='zoom image'>`;
+            let opts = '';
+            q.options.forEach(opt => {
+                opts += `<button onclick="checkAnswer('${opt}')">${opt}</button>`;
+            });
+            document.getElementById('options').innerHTML = opts;
+            document.getElementById('reveal-box').style.display = 'none';
+        }
+
+        function checkAnswer(selected) {
+            const q = questions[current];
+            document.getElementById('full-img').src = `images/q${q.id}_full.jpg`;
+            if (selected === q.answer) {
+                document.getElementById('result-message').innerText = q.message;
+            } else {
+                document.getElementById('result-message').innerText = `Oops! It's actually a ${q.answer}!`;
+            }
+            document.getElementById('reveal-box').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            current++;
+            if (current < questions.length) {
+                showQuestion();
+            } else {
+                document.body.innerHTML = "<h1>Congratulations Grace!</h1><p>You finished the game!</p>";
+            }
+        }
+
+        showQuestion();
+    </script>
+</body>
+</html>
